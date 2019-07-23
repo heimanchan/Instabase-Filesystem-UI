@@ -14,9 +14,30 @@ class Folder extends React.Component {
       prevent: false
     }
 
-    this.getClickHandler = this.getClickHandler.bind(this)
+    // this.getClickHandler = this.getClickHandler.bind(this)
     this.doClick = this.doClick.bind(this)
     this.doDoubleClick = this.doDoubleClick.bind(this)
+  }
+
+  componentWillMount() {
+    this.clickTimeout = null
+  }
+
+  handleClicks() {
+    if (this.clickTimeout !== null) {
+      this.doDoubleClick();
+      console.log('double click executes')
+      clearTimeout(this.clickTimeout)
+      this.clickTimeout = null
+    } else {
+      console.log("single click")
+      this.clickTimeout = setTimeout(() => {
+        this.doClick();
+        console.log('first click executes ')
+        clearTimeout(this.clickTimeout)
+        this.clickTimeout = null
+      }, 250)
+    }
   }
 
   doClick() {
@@ -27,26 +48,21 @@ class Folder extends React.Component {
     console.log("Double!")
   }
 
-  getClickHandler(onClick, onDblClick, delay = 1000) {
-    console.log("onClick")
-    let timeoutID = null;
+  // getClickHandler(onClick, onDblClick, delay = 1000) {
+  //   let timeoutID = null;
 
-
-    if (!timeoutID) {
-      timeoutID = setTimeout(function () {
-        console.log("Single!")  
-
-        onClick();
-        timeoutID = null
-      }, delay);
-    } else {
-      timeoutID = clearTimeout(timeoutID);
-      console.log("Double!")          
-
-      onDblClick();
-    }
-
-  }
+  //   if (!timeoutID) {
+  //     timeoutID = setTimeout(function () {
+  //       console.log("Single!")  
+  //       onClick();
+  //       timeoutID = null
+  //     }, delay);
+  //   } else {
+  //     timeoutID = clearTimeout(timeoutID);
+  //     console.log("Double Click!")          
+  //     onDblClick();
+  //   }
+  // }
 
   convertChildrenIntoComponent() {
     let children;
@@ -71,7 +87,7 @@ class Folder extends React.Component {
     return (
       <div>
         <h3 onClick={e => 
-          this.getClickHandler(this.doClick, this.doDoubleClick)
+          this.handleClicks()
           }>{this.state.name}</h3>
         <ul style={style}>{this.convertChildrenIntoComponent()}</ul>
       </div>

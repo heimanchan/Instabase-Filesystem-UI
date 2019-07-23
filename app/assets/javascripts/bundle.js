@@ -238,15 +238,41 @@ function (_React$Component) {
       hideChildren: true,
       timer: 0,
       delay: 250,
-      prevent: false
+      prevent: false // this.getClickHandler = this.getClickHandler.bind(this)
+
     };
-    _this.getClickHandler = _this.getClickHandler.bind(_assertThisInitialized(_this));
     _this.doClick = _this.doClick.bind(_assertThisInitialized(_this));
     _this.doDoubleClick = _this.doDoubleClick.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Folder, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      this.clickTimeout = null;
+    }
+  }, {
+    key: "handleClicks",
+    value: function handleClicks() {
+      var _this2 = this;
+
+      if (this.clickTimeout !== null) {
+        this.doDoubleClick();
+        console.log('double click executes');
+        clearTimeout(this.clickTimeout);
+        this.clickTimeout = null;
+      } else {
+        console.log("single click");
+        this.clickTimeout = setTimeout(function () {
+          _this2.doClick();
+
+          console.log('first click executes ');
+          clearTimeout(_this2.clickTimeout);
+          _this2.clickTimeout = null;
+        }, 250);
+      }
+    }
+  }, {
     key: "doClick",
     value: function doClick() {
       this.setState({
@@ -257,26 +283,21 @@ function (_React$Component) {
     key: "doDoubleClick",
     value: function doDoubleClick() {
       console.log("Double!");
-    }
-  }, {
-    key: "getClickHandler",
-    value: function getClickHandler(onClick, onDblClick) {
-      var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1000;
-      console.log("onClick");
-      var timeoutID = null;
+    } // getClickHandler(onClick, onDblClick, delay = 1000) {
+    //   let timeoutID = null;
+    //   if (!timeoutID) {
+    //     timeoutID = setTimeout(function () {
+    //       console.log("Single!")  
+    //       onClick();
+    //       timeoutID = null
+    //     }, delay);
+    //   } else {
+    //     timeoutID = clearTimeout(timeoutID);
+    //     console.log("Double Click!")          
+    //     onDblClick();
+    //   }
+    // }
 
-      if (!timeoutID) {
-        timeoutID = setTimeout(function () {
-          console.log("Single!");
-          onClick();
-          timeoutID = null;
-        }, delay);
-      } else {
-        timeoutID = clearTimeout(timeoutID);
-        console.log("Double!");
-        onDblClick();
-      }
-    }
   }, {
     key: "convertChildrenIntoComponent",
     value: function convertChildrenIntoComponent() {
@@ -306,7 +327,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var style = this.state.hideChildren ? {
         display: "none"
@@ -315,7 +336,7 @@ function (_React$Component) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
         onClick: function onClick(e) {
-          return _this2.getClickHandler(_this2.doClick, _this2.doDoubleClick);
+          return _this3.handleClicks();
         }
       }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         style: style
