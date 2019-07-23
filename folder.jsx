@@ -8,14 +8,44 @@ class Folder extends React.Component {
     this.state = {
       name: this.props.name,
       children: this.props.children,
-      hideChildren: true
+      hideChildren: true,
+      timer: 0,
+      delay: 250,
+      prevent: false
     }
+
+    this.getClickHandler = this.getClickHandler.bind(this)
+    this.doClick = this.doClick.bind(this)
+    this.doDoubleClick = this.doDoubleClick.bind(this)
   }
 
-  toggleChildren() {
-    this.setState(
-      { hideChildren: !this.state.hideChildren }
-    );
+  doClick() {
+    this.setState({ hideChildren: !this.state.hideChildren });
+  }
+
+  doDoubleClick() {
+    console.log("Double!")
+  }
+
+  getClickHandler(onClick, onDblClick, delay = 1000) {
+    console.log("onClick")
+    let timeoutID = null;
+
+
+    if (!timeoutID) {
+      timeoutID = setTimeout(function () {
+        console.log("Single!")  
+
+        onClick();
+        timeoutID = null
+      }, delay);
+    } else {
+      timeoutID = clearTimeout(timeoutID);
+      console.log("Double!")          
+
+      onDblClick();
+    }
+
   }
 
   convertChildrenIntoComponent() {
@@ -36,18 +66,13 @@ class Folder extends React.Component {
   }
 
   render() {
-    // let children;
     let style = this.state.hideChildren ? { display: "none" } : { display: "block" };
-
-    // if (this.state.children) {
-    //   children = this.state.children.map(
-    //     child => <li key={child.name}>{child.name}</li>
-    //   )
-    // } else ""
 
     return (
       <div>
-        <h3 onClick={e => this.toggleChildren()}>{this.state.name}</h3>        
+        <h3 onClick={e => 
+          this.getClickHandler(this.doClick, this.doDoubleClick)
+          }>{this.state.name}</h3>
         <ul style={style}>{this.convertChildrenIntoComponent()}</ul>
       </div>
       

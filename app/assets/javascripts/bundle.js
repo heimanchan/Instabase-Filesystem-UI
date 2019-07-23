@@ -210,9 +210,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -235,17 +235,47 @@ function (_React$Component) {
     _this.state = {
       name: _this.props.name,
       children: _this.props.children,
-      hideChildren: true
+      hideChildren: true,
+      timer: 0,
+      delay: 250,
+      prevent: false
     };
+    _this.getClickHandler = _this.getClickHandler.bind(_assertThisInitialized(_this));
+    _this.doClick = _this.doClick.bind(_assertThisInitialized(_this));
+    _this.doDoubleClick = _this.doDoubleClick.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Folder, [{
-    key: "toggleChildren",
-    value: function toggleChildren() {
+    key: "doClick",
+    value: function doClick() {
       this.setState({
         hideChildren: !this.state.hideChildren
       });
+    }
+  }, {
+    key: "doDoubleClick",
+    value: function doDoubleClick() {
+      console.log("Double!");
+    }
+  }, {
+    key: "getClickHandler",
+    value: function getClickHandler(onClick, onDblClick) {
+      var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1000;
+      console.log("onClick");
+      var timeoutID = null;
+
+      if (!timeoutID) {
+        timeoutID = setTimeout(function () {
+          console.log("Single!");
+          onClick();
+          timeoutID = null;
+        }, delay);
+      } else {
+        timeoutID = clearTimeout(timeoutID);
+        console.log("Double!");
+        onDblClick();
+      }
     }
   }, {
     key: "convertChildrenIntoComponent",
@@ -278,20 +308,14 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      // let children;
       var style = this.state.hideChildren ? {
         display: "none"
       } : {
         display: "block"
-      }; // if (this.state.children) {
-      //   children = this.state.children.map(
-      //     child => <li key={child.name}>{child.name}</li>
-      //   )
-      // } else ""
-
+      };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
         onClick: function onClick(e) {
-          return _this2.toggleChildren();
+          return _this2.getClickHandler(_this2.doClick, _this2.doDoubleClick);
         }
       }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         style: style

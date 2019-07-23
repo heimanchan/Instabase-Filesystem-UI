@@ -12,7 +12,7 @@ class File extends React.Component {
   render() {
     return (
       <div>
-        <h3>{this.state.name}</h3>
+        <h3>{this.state.name}</h3> 
       </div>
     )
   }
