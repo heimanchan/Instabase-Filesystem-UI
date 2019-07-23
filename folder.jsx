@@ -7,21 +7,31 @@ class Folder extends React.Component {
 
     this.state = {
       name: this.props.name,
-      children: this.props.children
+      children: this.props.children,
+      hideChildren: true
     }
   }
 
+  toggleChildren() {
+    this.setState(
+      {hideChildren: !this.state.hideChildren}
+    );
+  }
+
   render() {
-    let children = this.state.children;
-    // children ? children.map(child => <li>{child.name}</li>) : "";
-    console.log(children)
+    let children;
+    let style = this.state.hideChildren ? { display: "none" } : { display: "block" };
+
+    if (this.state.children) {
+      children = this.state.children.map(
+        child => <li key={child.name}>{child.name}</li>
+      )
+    } else ""
 
     return (
       <div>
-        <h2>{this.state.name}</h2>
-        <ul>
-          {/* {children} */}
-        </ul>
+        <h3 onClick={e => this.toggleChildren()}>{this.state.name}</h3>        
+        <ul style={style}>{children}</ul>
       </div>
       
     )

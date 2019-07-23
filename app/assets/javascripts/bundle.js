@@ -115,7 +115,9 @@ function Root() {
   });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "main"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, folders));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "hidden-children"
+  }, folders));
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -221,18 +223,46 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Folder).call(this, props));
     _this.state = {
       name: _this.props.name,
-      children: _this.props.children
+      children: _this.props.children,
+      hideChildren: true
     };
     return _this;
   }
 
   _createClass(Folder, [{
+    key: "toggleChildren",
+    value: function toggleChildren() {
+      this.setState({
+        hideChildren: !this.state.hideChildren
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var children = this.state.children; // children ? children.map(child => <li>{child.name}</li>) : "";
+      var _this2 = this;
 
-      console.log(children);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null));
+      var children;
+      var style = this.state.hideChildren ? {
+        display: "none"
+      } : {
+        display: "block"
+      };
+
+      if (this.state.children) {
+        children = this.state.children.map(function (child) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+            key: child.name
+          }, child.name);
+        });
+      } else "";
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        onClick: function onClick(e) {
+          return _this2.toggleChildren();
+        }
+      }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        style: style
+      }, children));
     }
   }]);
 

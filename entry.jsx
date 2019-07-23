@@ -12,12 +12,11 @@ function Root() {
         </li>
       )
     }
-    
   )
-    
+  
   return (
     <div className="main">
-      <ul>
+      <ul className="hidden-children">
         {folders}
       </ul>
     </div>
