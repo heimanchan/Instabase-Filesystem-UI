@@ -5,8 +5,16 @@ class File extends React.Component {
     super(props);
 
     this.state ={
-      name: null
+      name: this.props.name
     }
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>{this.state.name}</h3>
+      </div>
+    )
   }
 }
 

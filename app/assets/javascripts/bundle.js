@@ -141,6 +141,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
@@ -165,10 +169,17 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(File).call(this, props));
     _this.state = {
-      name: null
+      name: _this.props.name
     };
     return _this;
   }
+
+  _createClass(File, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, this.state.name));
+    }
+  }]);
 
   return File;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
@@ -237,24 +248,46 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "convertChildrenIntoComponent",
+    value: function convertChildrenIntoComponent() {
+      var children;
+
+      if (this.state.children) {
+        children = this.state.children.map(function (child) {
+          if (child.type === "file") {
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+              key: child.name
+            }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_file__WEBPACK_IMPORTED_MODULE_1__["default"], {
+              name: child.name
+            }));
+          } else {
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+              key: child.name
+            }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Folder, {
+              name: child.name,
+              children: child.children
+            }));
+          }
+        });
+      } else "";
+
+      return children;
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      var children;
+      // let children;
       var style = this.state.hideChildren ? {
         display: "none"
       } : {
         display: "block"
-      };
-
-      if (this.state.children) {
-        children = this.state.children.map(function (child) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-            key: child.name
-          }, child.name);
-        });
-      } else "";
+      }; // if (this.state.children) {
+      //   children = this.state.children.map(
+      //     child => <li key={child.name}>{child.name}</li>
+      //   )
+      // } else ""
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
         onClick: function onClick(e) {
@@ -262,7 +295,7 @@ function (_React$Component) {
         }
       }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         style: style
-      }, children));
+      }, this.convertChildrenIntoComponent()));
     }
   }]);
 
