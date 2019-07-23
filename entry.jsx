@@ -5,10 +5,14 @@ const data = require("./input_data.json");
 
 function Root() {
   let folders = data.globalInputData.map(
-    folder => 
-    <li>
-      <Folder name={folder.name} children={folder.children} />
-    </li>
+    folder => {
+      return (
+        <li>
+          <Folder name={folder.name} children={folder.children} />
+        </li>
+      )
+    }
+    
   )
     
   return (

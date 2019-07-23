@@ -1,4 +1,5 @@
 import React from 'react';
+import File from './file';
 
 class Folder extends React.Component {
   constructor(props) {
@@ -6,18 +7,20 @@ class Folder extends React.Component {
 
     this.state = {
       name: this.props.name,
-      children: []
+      children: this.props.children
     }
   }
 
   render() {
-    let children = this.state.children.map(child => <li>{child.name}</li>)
+    let children = this.state.children;
+    // children ? children.map(child => <li>{child.name}</li>) : "";
+    console.log(children)
 
     return (
       <div>
         <h2>{this.state.name}</h2>
         <ul>
-          {children}
+          {/* {children} */}
         </ul>
       </div>
       
