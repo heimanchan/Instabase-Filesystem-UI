@@ -1,105 +1,91 @@
-// @flow
-
-type FileNode = {
-  name: string,
-  type: 'file',
-};
-
-type FolderNode = {
-  name: string,
-  type: 'folder',
-  children: Array<FolderNode|FileNode>
+{
+  "globalInputData": [
+    {
+    "name": "A1-fo",
+    "type": "folder",
+    "children": [
+        {
+        "name": "B1-fo",
+        "type": "folder",
+        "children": [
+            {
+            "name": "C1-fi",
+            "type": "file"
+            },
+            {
+            "name": "C2-fo",
+            "type": "folder",
+            "children": [
+                {
+                "name": "D-fi",
+                "type": "file"
+                }
+              ]
+            }
+          ]
+        },
+        {
+        "name": "B2-fi",
+        "type": "file"
+        },
+        {
+        "name": "B3-fi",
+        "type": "file"
+        },
+        {
+        "name": "B4-fo",
+        "type": "folder",
+        "children": []
+        }
+      ]
+    },
+    {
+    "name": "a2-fo",
+    "type": "folder",
+    "children": [
+        {
+        "name": "b1-fi",
+        "type": "file"
+        },
+        {
+        "name": "b2-fi",
+        "type": "file"
+        },
+        {
+        "name": "b3-fo",
+        "type": "folder",
+        "children": [
+            {
+            "name": "c1-fo",
+            "type": "folder",
+            "children": [
+                {
+                "name": "d1-fi",
+                "type": "file"
+                },
+                {
+                "name": "d2-fo",
+                "type": "folder",
+                "children": [
+                    {
+                    "name": "e1-fi",
+                    "type": "file"
+                    }
+                  ]
+                },
+                {
+                "name": "d3-fi",
+                "type": "file"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+    "name": "A3-fo",
+    "type": "folder"
+    }
+  ]
 }
-
-type InputNode = FolderNode | FileNode;
-
-
-const globalInputData: Array<InputNode> = [
-  {
-    name: 'A1-fo',
-    type: 'folder',
-    children: [
-      {
-        name: 'B1-fo',
-        type: 'folder',
-        children: [
-          {
-            name: 'C1-fi',
-            type: 'file',
-          },
-          {
-            name: 'C2-fo',
-            type: 'folder',
-            children: [
-              {
-                name: 'D-fi',
-                type: 'file',
-              }
-            ]
-          }
-        ]
-      },
-      {
-        name: 'B2-fi',
-        type: 'file',
-      },
-      {
-        name: 'B3-fi',
-        type: 'file',
-      },
-      {
-        name: 'B4-fo',
-        type: 'folder',
-        children: [],
-      },
-    ]
-  },
-  {
-    name: 'a2-fo',
-    type: 'folder',
-    children: [
-      {
-        name: 'b1-fi',
-        type: 'file',
-      },
-      {
-        name: 'b2-fi',
-        type: 'file',
-      },
-      {
-        name: 'b3-fo',
-        type: 'folder',
-        children: [
-          {
-            name: 'c1-fo',
-            type: 'folder',
-            children: [
-              {
-                name: 'd1-fi',
-                type: 'file',
-              },
-              {
-                name: 'd2-fo',
-                type: 'folder',
-                children: [
-                  {
-                    name: 'e1-fi',
-                    type: 'file',
-                  }
-                ]
-              },
-              {
-                name: 'd3-fi',
-                type: 'file',
-              },
-            ]
-          },
-        ],
-      },
-    ]
-  },
-  {
-    name: 'A3-fo',
-    type: 'folder',
-  }
-];

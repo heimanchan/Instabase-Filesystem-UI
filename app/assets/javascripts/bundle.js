@@ -99,18 +99,105 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _folder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./folder */ "./folder.jsx");
 
 
+
+
+var data = __webpack_require__(/*! ./input_data.json */ "./input_data.json");
 
 function Root() {
+  var folders = data.globalInputData.map(function (folder) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_folder__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      name: folder.name,
+      children: folder.children
+    }));
+  });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "main"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Test"));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, folders));
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Root, null), document.getElementById("root"));
 });
+
+/***/ }),
+
+/***/ "./folder.jsx":
+/*!********************!*\
+  !*** ./folder.jsx ***!
+  \********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var Folder =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Folder, _React$Component);
+
+  function Folder(props) {
+    var _this;
+
+    _classCallCheck(this, Folder);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Folder).call(this, props));
+    _this.state = {
+      name: _this.props.name,
+      children: []
+    };
+    return _this;
+  }
+
+  _createClass(Folder, [{
+    key: "render",
+    value: function render() {
+      var children = this.state.children.map(function (child) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, child.name);
+      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, children));
+    }
+  }]);
+
+  return Folder;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (Folder);
+
+/***/ }),
+
+/***/ "./input_data.json":
+/*!*************************!*\
+  !*** ./input_data.json ***!
+  \*************************/
+/*! exports provided: globalInputData, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"globalInputData\":[{\"name\":\"A1-fo\",\"type\":\"folder\",\"children\":[{\"name\":\"B1-fo\",\"type\":\"folder\",\"children\":[{\"name\":\"C1-fi\",\"type\":\"file\"},{\"name\":\"C2-fo\",\"type\":\"folder\",\"children\":[{\"name\":\"D-fi\",\"type\":\"file\"}]}]},{\"name\":\"B2-fi\",\"type\":\"file\"},{\"name\":\"B3-fi\",\"type\":\"file\"},{\"name\":\"B4-fo\",\"type\":\"folder\",\"children\":[]}]},{\"name\":\"a2-fo\",\"type\":\"folder\",\"children\":[{\"name\":\"b1-fi\",\"type\":\"file\"},{\"name\":\"b2-fi\",\"type\":\"file\"},{\"name\":\"b3-fo\",\"type\":\"folder\",\"children\":[{\"name\":\"c1-fo\",\"type\":\"folder\",\"children\":[{\"name\":\"d1-fi\",\"type\":\"file\"},{\"name\":\"d2-fo\",\"type\":\"folder\",\"children\":[{\"name\":\"e1-fi\",\"type\":\"file\"}]},{\"name\":\"d3-fi\",\"type\":\"file\"}]}]}]},{\"name\":\"A3-fo\",\"type\":\"folder\"}]}");
 
 /***/ }),
 
