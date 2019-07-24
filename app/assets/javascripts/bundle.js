@@ -242,8 +242,7 @@ function (_React$Component) {
     _this.doClick = _this.doClick.bind(_assertThisInitialized(_this));
     _this.doDoubleClick = _this.doDoubleClick.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
-    _this.editNameInputField = _this.editNameInputField.bind(_assertThisInitialized(_this));
-    _this.changeNodeName = _this.changeNodeName.bind(_assertThisInitialized(_this));
+    _this.showInputField = _this.showInputField.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -254,11 +253,11 @@ function (_React$Component) {
     }
   }, {
     key: "handleClicks",
-    value: function handleClicks(e) {
+    value: function handleClicks() {
       var _this2 = this;
 
       if (this.clickTimeout !== null) {
-        this.doDoubleClick(e);
+        this.doDoubleClick();
         console.log('double click executes');
         clearTimeout(this.clickTimeout);
         this.clickTimeout = null;
@@ -282,30 +281,17 @@ function (_React$Component) {
     }
   }, {
     key: "doDoubleClick",
-    value: function doDoubleClick(e) {
-      console.log("Double");
-      this.editNameInputField(e);
+    value: function doDoubleClick() {
+      this.showInputField();
     }
   }, {
     key: "handleChange",
     value: function handleChange(e) {
+      var _this3 = this;
+
       this.setState({
         name: e.target.value
       });
-    }
-  }, {
-    key: "editNameInputField",
-    value: function editNameInputField() {
-      this.setState({
-        editingName: !this.state.editingName
-      });
-      this.changeNodeName();
-    }
-  }, {
-    key: "changeNodeName",
-    value: function changeNodeName() {
-      var _this3 = this;
-
       var inputField = document.getElementById("input-".concat(this.state.name));
       inputField.addEventListener('keyup', function (e) {
         if (e.keyCode === 13) {
@@ -315,6 +301,13 @@ function (_React$Component) {
             editingName: !_this3.state.editingName
           });
         }
+      });
+    }
+  }, {
+    key: "showInputField",
+    value: function showInputField() {
+      this.setState({
+        editingName: !this.state.editingName
       });
     }
   }, {
@@ -365,8 +358,8 @@ function (_React$Component) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
         style: showNodeName,
-        onClick: function onClick(e) {
-          return _this4.handleClicks(e);
+        onClick: function onClick() {
+          return _this4.handleClicks();
         }
       }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         id: "input-".concat(this.state.name),

@@ -16,17 +16,16 @@ class Folder extends React.Component {
     this.doClick = this.doClick.bind(this)
     this.doDoubleClick = this.doDoubleClick.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.editNameInputField = this.editNameInputField.bind(this)
-    this.changeNodeName = this.changeNodeName.bind(this)
+    this.showInputField = this.showInputField.bind(this)
   }
 
   componentWillMount() {
     this.clickTimeout = null
   }
 
-  handleClicks(e) {
+  handleClicks() {
     if (this.clickTimeout !== null) {
-      this.doDoubleClick(e);
+      this.doDoubleClick();
       console.log('double click executes')
       clearTimeout(this.clickTimeout)
       this.clickTimeout = null
@@ -45,21 +44,12 @@ class Folder extends React.Component {
     this.setState({ hideChildren: !this.state.hideChildren });
   }
 
-  doDoubleClick(e) {
-    console.log("Double")
-    this.editNameInputField(e)
+  doDoubleClick() {
+    this.showInputField()
   }
 
   handleChange(e) {
     this.setState({ name: e.target.value });
-  }
-  
-  editNameInputField() {
-    this.setState({ editingName: !this.state.editingName });
-    this.changeNodeName();
-  }
-
-  changeNodeName() {
     let inputField = document.getElementById(`input-${this.state.name}`);
     inputField.addEventListener('keyup', e => {
       if (e.keyCode === 13) {
@@ -67,6 +57,10 @@ class Folder extends React.Component {
         this.setState({ editingName: !this.state.editingName });
       }
     });
+  }
+  
+  showInputField() {
+    this.setState({ editingName: !this.state.editingName });
   }
 
   convertChildrenIntoComponent() {
@@ -94,7 +88,7 @@ class Folder extends React.Component {
     return (
       <div>
         <h3 style={showNodeName} 
-          onClick={e => this.handleClicks(e)}>{this.state.name}
+          onClick={() => this.handleClicks()}>{this.state.name}
         </h3>
 
         <input id={`input-${this.state.name}`} 
