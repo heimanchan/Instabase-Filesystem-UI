@@ -9,23 +9,24 @@ class Folder extends React.Component {
       name: this.props.name,
       children: this.props.children,
       hideChildren: true,
-      timer: 0,
-      delay: 250,
-      prevent: false
+      editingName:false,
+      highlight: false
     }
 
-    // this.getClickHandler = this.getClickHandler.bind(this)
     this.doClick = this.doClick.bind(this)
     this.doDoubleClick = this.doDoubleClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.editNameInputField = this.editNameInputField.bind(this)
+    this.changeNodeName = this.changeNodeName.bind(this)
   }
 
   componentWillMount() {
     this.clickTimeout = null
   }
 
-  handleClicks() {
+  handleClicks(e) {
     if (this.clickTimeout !== null) {
-      this.doDoubleClick();
+      this.doDoubleClick(e);
       console.log('double click executes')
       clearTimeout(this.clickTimeout)
       this.clickTimeout = null
@@ -44,25 +45,29 @@ class Folder extends React.Component {
     this.setState({ hideChildren: !this.state.hideChildren });
   }
 
-  doDoubleClick() {
-    console.log("Double!")
+  doDoubleClick(e) {
+    console.log("Double")
+    this.editNameInputField(e)
   }
 
-  // getClickHandler(onClick, onDblClick, delay = 1000) {
-  //   let timeoutID = null;
+  handleChange(e) {
+    this.setState({ name: e.target.value });
+  }
+  
+  editNameInputField() {
+    this.setState({ editingName: !this.state.editingName });
+    this.changeNodeName();
+  }
 
-  //   if (!timeoutID) {
-  //     timeoutID = setTimeout(function () {
-  //       console.log("Single!")  
-  //       onClick();
-  //       timeoutID = null
-  //     }, delay);
-  //   } else {
-  //     timeoutID = clearTimeout(timeoutID);
-  //     console.log("Double Click!")          
-  //     onDblClick();
-  //   }
-  // }
+  changeNodeName() {
+    let inputField = document.getElementById(`input-${this.state.name}`);
+    inputField.addEventListener('keyup', e => {
+      if (e.keyCode === 13) {
+        console.log('Enter')
+        this.setState({ editingName: !this.state.editingName });
+      }
+    });
+  }
 
   convertChildrenIntoComponent() {
     let children;
@@ -80,18 +85,26 @@ class Folder extends React.Component {
 
     return children
   }
-
+  
   render() {
-    let style = this.state.hideChildren ? { display: "none" } : { display: "block" };
+    let showChildren = this.state.hideChildren ? { display: "none" } : { display: "block" };
+    let showEditField = this.state.editingName ? { display: "block" } : { display: "none" };
+    let showNodeName = this.state.editingName ? { display: "none" } : { display: "block" };
 
     return (
       <div>
-        <h3 onClick={e => 
-          this.handleClicks()
-          }>{this.state.name}</h3>
-        <ul style={style}>{this.convertChildrenIntoComponent()}</ul>
+        <h3 style={showNodeName} 
+          onClick={e => this.handleClicks(e)}>{this.state.name}
+        </h3>
+
+        <input id={`input-${this.state.name}`} 
+          style={showEditField} 
+          value={this.state.name}
+          onChange={this.handleChange} 
+          type="text" />
+
+        <ul style={showChildren}>{this.convertChildrenIntoComponent()}</ul>
       </div>
-      
     )
   }
 }

@@ -236,13 +236,14 @@ function (_React$Component) {
       name: _this.props.name,
       children: _this.props.children,
       hideChildren: true,
-      timer: 0,
-      delay: 250,
-      prevent: false // this.getClickHandler = this.getClickHandler.bind(this)
-
+      editingName: false,
+      highlight: false
     };
     _this.doClick = _this.doClick.bind(_assertThisInitialized(_this));
     _this.doDoubleClick = _this.doDoubleClick.bind(_assertThisInitialized(_this));
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
+    _this.editNameInputField = _this.editNameInputField.bind(_assertThisInitialized(_this));
+    _this.changeNodeName = _this.changeNodeName.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -253,11 +254,11 @@ function (_React$Component) {
     }
   }, {
     key: "handleClicks",
-    value: function handleClicks() {
+    value: function handleClicks(e) {
       var _this2 = this;
 
       if (this.clickTimeout !== null) {
-        this.doDoubleClick();
+        this.doDoubleClick(e);
         console.log('double click executes');
         clearTimeout(this.clickTimeout);
         this.clickTimeout = null;
@@ -281,23 +282,41 @@ function (_React$Component) {
     }
   }, {
     key: "doDoubleClick",
-    value: function doDoubleClick() {
-      console.log("Double!");
-    } // getClickHandler(onClick, onDblClick, delay = 1000) {
-    //   let timeoutID = null;
-    //   if (!timeoutID) {
-    //     timeoutID = setTimeout(function () {
-    //       console.log("Single!")  
-    //       onClick();
-    //       timeoutID = null
-    //     }, delay);
-    //   } else {
-    //     timeoutID = clearTimeout(timeoutID);
-    //     console.log("Double Click!")          
-    //     onDblClick();
-    //   }
-    // }
+    value: function doDoubleClick(e) {
+      console.log("Double");
+      this.editNameInputField(e);
+    }
+  }, {
+    key: "handleChange",
+    value: function handleChange(e) {
+      this.setState({
+        name: e.target.value
+      });
+    }
+  }, {
+    key: "editNameInputField",
+    value: function editNameInputField() {
+      this.setState({
+        editingName: !this.state.editingName
+      });
+      this.changeNodeName();
+    }
+  }, {
+    key: "changeNodeName",
+    value: function changeNodeName() {
+      var _this3 = this;
 
+      var inputField = document.getElementById("input-".concat(this.state.name));
+      inputField.addEventListener('keyup', function (e) {
+        if (e.keyCode === 13) {
+          console.log('Enter');
+
+          _this3.setState({
+            editingName: !_this3.state.editingName
+          });
+        }
+      });
+    }
   }, {
     key: "convertChildrenIntoComponent",
     value: function convertChildrenIntoComponent() {
@@ -327,19 +346,36 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
-      var style = this.state.hideChildren ? {
+      var showChildren = this.state.hideChildren ? {
+        display: "none"
+      } : {
+        display: "block"
+      };
+      var showEditField = this.state.editingName ? {
+        display: "block"
+      } : {
+        display: "none"
+      };
+      var showNodeName = this.state.editingName ? {
         display: "none"
       } : {
         display: "block"
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        style: showNodeName,
         onClick: function onClick(e) {
-          return _this3.handleClicks();
+          return _this4.handleClicks(e);
         }
-      }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        style: style
+      }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        id: "input-".concat(this.state.name),
+        style: showEditField,
+        value: this.state.name,
+        onChange: this.handleChange,
+        type: "text"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        style: showChildren
       }, this.convertChildrenIntoComponent()));
     }
   }]);
