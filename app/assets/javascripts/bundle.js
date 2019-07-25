@@ -148,9 +148,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -170,12 +170,14 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(File).call(this, props));
     _this.state = {
-      name: _this.props.name // this.handleChange = this.handleChange.bind(this)
-      // this.toggleInputField = this.toggleInputField.bind(this)
-      // this.changeNodeName = this.changeNodeName.bind(this)
-      // this.highlightAncestorChain = this.highlightAncestorChain.bind(this)
-
+      name: _this.props.name,
+      ancestor: _this.props.ancestor,
+      editingName: false
     };
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
+    _this.toggleInputField = _this.toggleInputField.bind(_assertThisInitialized(_this));
+    _this.changeNodeName = _this.changeNodeName.bind(_assertThisInitialized(_this));
+    _this.highlightAncestorChain = _this.highlightAncestorChain.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -186,7 +188,8 @@ function (_React$Component) {
     }
   }, {
     key: "componentDidMount",
-    value: function componentDidMount() {// this.changeNodeName();
+    value: function componentDidMount() {
+      this.changeNodeName();
     }
   }, {
     key: "componentWillUnmount",
@@ -201,9 +204,80 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "doDoubleClick",
+    value: function doDoubleClick() {
+      this.toggleInputField();
+    }
+  }, {
+    key: "handleChange",
+    value: function handleChange(e) {
+      this.setState({
+        name: e.target.value
+      });
+      this.highlightAncestorChain();
+    }
+  }, {
+    key: "toggleInputField",
+    value: function toggleInputField() {
+      this.setState({
+        editingName: !this.state.editingName
+      });
+    }
+  }, {
+    key: "changeNodeName",
+    value: function changeNodeName() {
+      var _this3 = this;
+
+      var inputField = document.getElementById("input-".concat(this.state.name));
+      inputField.addEventListener('keydown', function (e) {
+        if (e.keyCode === 13) {
+          _this3.toggleInputField();
+        }
+      });
+    }
+  }, {
+    key: "highlightAncestorChain",
+    value: function highlightAncestorChain() {
+      var node = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this;
+      var currNode = document.getElementById("anc-".concat(node.state.name));
+
+      if (node.state.ancestor === null) {
+        console.log("root");
+        return currNode.style.background = "yellow";
+      }
+
+      currNode.style.background = "yellow";
+      console.log(node.state.name);
+      this.highlightAncestorChain(node.state.ancestor);
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, this.state.name));
+      var _this4 = this;
+
+      var showEditField = this.state.editingName ? {
+        display: "block"
+      } : {
+        display: "none"
+      };
+      var showNodeName = this.state.editingName ? {
+        display: "none"
+      } : {
+        display: "block"
+      };
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        id: "anc-".concat(this.state.name),
+        style: showNodeName,
+        onDoubleClick: function onDoubleClick() {
+          return _this4.doDoubleClick();
+        }
+      }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        id: "input-".concat(this.state.name),
+        style: showEditField,
+        value: this.state.name,
+        onChange: this.handleChange,
+        type: "text"
+      }));
     }
   }]);
 
