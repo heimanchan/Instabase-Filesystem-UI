@@ -8,7 +8,10 @@ function Root() {
     folder => {
       return (
         <li>
-          <Folder name={folder.name} children={folder.children} />
+          <Folder 
+            name={folder.name} 
+            children={folder.children}
+            ancestor={null} />
         </li>
       )
     }

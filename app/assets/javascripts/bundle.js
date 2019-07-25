@@ -110,7 +110,8 @@ function Root() {
   var folders = data.globalInputData.map(function (folder) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_folder__WEBPACK_IMPORTED_MODULE_2__["default"], {
       name: folder.name,
-      children: folder.children
+      children: folder.children,
+      ancestor: null
     }));
   });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -235,6 +236,7 @@ function (_React$Component) {
     _this.state = {
       name: _this.props.name,
       children: _this.props.children,
+      ancestor: _this.props.ancestor,
       hideChildren: true,
       editingName: false,
       highlight: false
@@ -244,6 +246,8 @@ function (_React$Component) {
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.toggleInputField = _this.toggleInputField.bind(_assertThisInitialized(_this));
     _this.changeNodeName = _this.changeNodeName.bind(_assertThisInitialized(_this));
+    _this.allAncestors = _this.allAncestors.bind(_assertThisInitialized(_this));
+    _this.highlightComponent = _this.highlightComponent.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -256,31 +260,42 @@ function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.changeNodeName();
+      this.highlightComponent();
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      var _this2 = this;
+
+      var inputField = document.getElementById("input-".concat(this.state.name));
+      inputField.removeEventListener('keydown', function (e) {
+        if (e.keyCode === 13) {
+          _this2.toggleInputField();
+        }
+      });
     }
   }, {
     key: "handleClicks",
     value: function handleClicks() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.clickTimeout !== null) {
         this.doDoubleClick();
-        console.log('double click executes');
         clearTimeout(this.clickTimeout);
         this.clickTimeout = null;
       } else {
-        console.log("single click");
         this.clickTimeout = setTimeout(function () {
-          _this2.doClick();
+          _this3.doClick();
 
-          console.log('first click executes ');
-          clearTimeout(_this2.clickTimeout);
-          _this2.clickTimeout = null;
+          clearTimeout(_this3.clickTimeout);
+          _this3.clickTimeout = null;
         }, 250);
       }
     }
   }, {
     key: "doClick",
     value: function doClick() {
+      // this.allAncestors();
       this.setState({
         hideChildren: !this.state.hideChildren
       });
@@ -296,6 +311,7 @@ function (_React$Component) {
       this.setState({
         name: e.target.value
       });
+      this.allAncestors();
     }
   }, {
     key: "toggleInputField",
@@ -307,23 +323,20 @@ function (_React$Component) {
   }, {
     key: "changeNodeName",
     value: function changeNodeName() {
-      var _this3 = this;
+      var _this4 = this;
 
       var inputField = document.getElementById("input-".concat(this.state.name));
       inputField.addEventListener('keydown', function (e) {
         if (e.keyCode === 13) {
-          // debugger
-          console.log(_this3.state.name);
-
-          _this3.toggleInputField();
-
-          console.log(_this3.state.editingName);
+          _this4.toggleInputField();
         }
       });
     }
   }, {
     key: "convertChildrenIntoComponent",
     value: function convertChildrenIntoComponent() {
+      var _this5 = this;
+
       var children;
 
       if (this.state.children) {
@@ -332,14 +345,16 @@ function (_React$Component) {
             return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
               key: child.name
             }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_file__WEBPACK_IMPORTED_MODULE_1__["default"], {
-              name: child.name
+              name: child.name,
+              ancestor: _this5
             }));
           } else {
             return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
               key: child.name
             }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Folder, {
               name: child.name,
-              children: child.children
+              children: child.children,
+              ancestor: _this5
             }));
           }
         });
@@ -348,9 +363,34 @@ function (_React$Component) {
       return children;
     }
   }, {
+    key: "allAncestors",
+    value: function allAncestors() {
+      var node = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this;
+      var currNode = document.getElementById("anc-".concat(node.state.name));
+
+      if (node.state.ancestor === null) {
+        console.log("root");
+        return currNode.style.background = "yellow";
+      } // this.setState({ highlight: true })
+
+
+      currNode.style.background = "yellow";
+      console.log(node.state.name);
+      this.allAncestors(node.state.ancestor);
+    }
+  }, {
+    key: "highlightComponent",
+    value: function highlightComponent() {
+      if (this.state.highlight) {
+        // let node = document.getElementById(`anc-${this.state.name}`);
+        // node.style.background = "yellow"
+        console.log("hi");
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this6 = this;
 
       var showChildren = this.state.hideChildren ? {
         display: "none"
@@ -368,9 +408,10 @@ function (_React$Component) {
         display: "block"
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        id: "anc-".concat(this.state.name),
         style: showNodeName,
         onClick: function onClick() {
-          return _this4.handleClicks();
+          return _this6.handleClicks();
         }
       }, this.state.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         id: "input-".concat(this.state.name),

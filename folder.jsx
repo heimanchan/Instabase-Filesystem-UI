@@ -8,6 +8,7 @@ class Folder extends React.Component {
     this.state = {
       name: this.props.name,
       children: this.props.children,
+      ancestor: this.props.ancestor,
       hideChildren: true,
       editingName:false,
       highlight: false
@@ -18,27 +19,38 @@ class Folder extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.toggleInputField = this.toggleInputField.bind(this)
     this.changeNodeName = this.changeNodeName.bind(this)
+    this.allAncestors = this.allAncestors.bind(this)
+    this.highlightComponent = this.highlightComponent.bind(this)
   }
 
   componentWillMount() {
-    this.clickTimeout = null
+    this.clickTimeout = null;
   }
 
   componentDidMount() {
     this.changeNodeName();
+    this.highlightComponent();
+  }
+
+  componentWillUnmount() {
+    let inputField = document.getElementById(`input-${this.state.name}`);
+    inputField.removeEventListener('keydown', e => {
+      if (e.keyCode === 13) {
+        this.toggleInputField();
+      }
+    });
   }
 
   handleClicks() {
     if (this.clickTimeout !== null) {
       this.doDoubleClick();
-      console.log('double click executes')
+
       clearTimeout(this.clickTimeout)
       this.clickTimeout = null
     } else {
-      console.log("single click")
       this.clickTimeout = setTimeout(() => {
         this.doClick();
-        console.log('first click executes ')
+
         clearTimeout(this.clickTimeout)
         this.clickTimeout = null
       }, 250)
@@ -46,6 +58,7 @@ class Folder extends React.Component {
   }
 
   doClick() {
+    // this.allAncestors();
     this.setState({ hideChildren: !this.state.hideChildren });
   }
 
@@ -55,6 +68,7 @@ class Folder extends React.Component {
 
   handleChange(e) {
     this.setState({ name: e.target.value });
+    this.allAncestors();
   }
   
   toggleInputField() {
@@ -65,10 +79,7 @@ class Folder extends React.Component {
     let inputField = document.getElementById(`input-${this.state.name}`);
     inputField.addEventListener('keydown', e => {
       if (e.keyCode === 13) {
-        // debugger
-        console.log(this.state.name)
         this.toggleInputField();
-        console.log(this.state.editingName)
       }
     });
   }
@@ -80,14 +91,36 @@ class Folder extends React.Component {
       children = this.state.children.map(
         child => {
           if (child.type === "file") {
-            return <li key={child.name}><File name={child.name}/></li>
+            return <li key={child.name}><File name={child.name} ancestor={this}/></li>
           } else {
-            return <li key={child.name}><Folder name={child.name} children={child.children} /></li>
+            return <li key={child.name}><Folder name={child.name} children={child.children} ancestor={this}/></li>
           }
         })
     } else ""
 
     return children
+  }
+
+  allAncestors(node = this) {
+    let currNode = document.getElementById(`anc-${node.state.name}`);
+
+    if (node.state.ancestor === null) {
+      console.log("root")
+      return currNode.style.background = "yellow";
+    }
+
+    // this.setState({ highlight: true })
+    currNode.style.background = "yellow"
+    console.log(node.state.name)
+    this.allAncestors(node.state.ancestor)
+  }
+
+  highlightComponent() {
+    if (this.state.highlight) {
+      // let node = document.getElementById(`anc-${this.state.name}`);
+      // node.style.background = "yellow"
+      console.log("hi")
+    }
   }
   
   render() {
@@ -97,15 +130,19 @@ class Folder extends React.Component {
 
     return (
       <div>
-        <h3 style={showNodeName} 
-          onClick={() => this.handleClicks()}>{this.state.name}
-        </h3>
+        <h3 
+          id={`anc-${this.state.name}`}
+          style={showNodeName} 
+          onClick={() => this.handleClicks()}
+        >{this.state.name}</h3>
 
-        <input id={`input-${this.state.name}`} 
+        <input 
+          id={`input-${this.state.name}`} 
           style={showEditField} 
           value={this.state.name}
           onChange={this.handleChange} 
-          type="text" />
+          type="text" 
+        />
 
         <ul style={showChildren}>{this.convertChildrenIntoComponent()}</ul>
       </div>
