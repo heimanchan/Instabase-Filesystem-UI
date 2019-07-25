@@ -106,12 +106,10 @@ class Folder extends React.Component {
     let currNode = document.getElementById(`anc-${node.state.name}`);
 
     if (node.state.ancestor === null) {
-      console.log("root")
       return currNode.style.background = "yellow";
     }
 
     currNode.style.background = "yellow"
-    console.log(node.state.name)
     this.highlightAncestorChain(node.state.ancestor)
   }
 
