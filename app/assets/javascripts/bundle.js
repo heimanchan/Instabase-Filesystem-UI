@@ -114,11 +114,7 @@ function Root() {
       ancestor: null
     }));
   });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "main"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "hidden-children"
-  }, folders));
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, folders));
 }
 
 document.addEventListener("DOMContentLoaded", function () {

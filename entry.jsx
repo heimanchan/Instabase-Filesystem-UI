@@ -18,8 +18,8 @@ function Root() {
   )
   
   return (
-    <div className="main">
-      <ul className="hidden-children">
+    <div>
+      <ul>
         {folders}
       </ul>
     </div>
