@@ -242,7 +242,8 @@ function (_React$Component) {
     _this.doClick = _this.doClick.bind(_assertThisInitialized(_this));
     _this.doDoubleClick = _this.doDoubleClick.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
-    _this.showInputField = _this.showInputField.bind(_assertThisInitialized(_this));
+    _this.toggleInputField = _this.toggleInputField.bind(_assertThisInitialized(_this));
+    _this.changeNodeName = _this.changeNodeName.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -250,6 +251,11 @@ function (_React$Component) {
     key: "componentWillMount",
     value: function componentWillMount() {
       this.clickTimeout = null;
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.changeNodeName();
     }
   }, {
     key: "handleClicks",
@@ -282,32 +288,37 @@ function (_React$Component) {
   }, {
     key: "doDoubleClick",
     value: function doDoubleClick() {
-      this.showInputField();
+      this.toggleInputField();
     }
   }, {
     key: "handleChange",
     value: function handleChange(e) {
-      var _this3 = this;
-
       this.setState({
         name: e.target.value
       });
-      var inputField = document.getElementById("input-".concat(this.state.name));
-      inputField.addEventListener('keyup', function (e) {
-        if (e.keyCode === 13) {
-          console.log('Enter');
-
-          _this3.setState({
-            editingName: !_this3.state.editingName
-          });
-        }
+    }
+  }, {
+    key: "toggleInputField",
+    value: function toggleInputField() {
+      this.setState({
+        editingName: !this.state.editingName
       });
     }
   }, {
-    key: "showInputField",
-    value: function showInputField() {
-      this.setState({
-        editingName: !this.state.editingName
+    key: "changeNodeName",
+    value: function changeNodeName() {
+      var _this3 = this;
+
+      var inputField = document.getElementById("input-".concat(this.state.name));
+      inputField.addEventListener('keydown', function (e) {
+        if (e.keyCode === 13) {
+          // debugger
+          console.log(_this3.state.name);
+
+          _this3.toggleInputField();
+
+          console.log(_this3.state.editingName);
+        }
       });
     }
   }, {

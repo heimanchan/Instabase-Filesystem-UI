@@ -16,11 +16,16 @@ class Folder extends React.Component {
     this.doClick = this.doClick.bind(this)
     this.doDoubleClick = this.doDoubleClick.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.showInputField = this.showInputField.bind(this)
+    this.toggleInputField = this.toggleInputField.bind(this)
+    this.changeNodeName = this.changeNodeName.bind(this)
   }
 
   componentWillMount() {
     this.clickTimeout = null
+  }
+
+  componentDidMount() {
+    this.changeNodeName();
   }
 
   handleClicks() {
@@ -45,22 +50,27 @@ class Folder extends React.Component {
   }
 
   doDoubleClick() {
-    this.showInputField()
+    this.toggleInputField();
   }
 
   handleChange(e) {
     this.setState({ name: e.target.value });
-    let inputField = document.getElementById(`input-${this.state.name}`);
-    inputField.addEventListener('keyup', e => {
-      if (e.keyCode === 13) {
-        console.log('Enter')
-        this.setState({ editingName: !this.state.editingName });
-      }
-    });
   }
   
-  showInputField() {
+  toggleInputField() {
     this.setState({ editingName: !this.state.editingName });
+  }
+
+  changeNodeName() {
+    let inputField = document.getElementById(`input-${this.state.name}`);
+    inputField.addEventListener('keydown', e => {
+      if (e.keyCode === 13) {
+        // debugger
+        console.log(this.state.name)
+        this.toggleInputField();
+        console.log(this.state.editingName)
+      }
+    });
   }
 
   convertChildrenIntoComponent() {
