@@ -170,12 +170,37 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(File).call(this, props));
     _this.state = {
-      name: _this.props.name
+      name: _this.props.name // this.handleChange = this.handleChange.bind(this)
+      // this.toggleInputField = this.toggleInputField.bind(this)
+      // this.changeNodeName = this.changeNodeName.bind(this)
+      // this.highlightAncestorChain = this.highlightAncestorChain.bind(this)
+
     };
     return _this;
   }
 
   _createClass(File, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      this.clickTimeout = null;
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {// this.changeNodeName();
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      var _this2 = this;
+
+      var inputField = document.getElementById("input-".concat(this.state.name));
+      inputField.removeEventListener('keydown', function (e) {
+        if (e.keyCode === 13) {
+          _this2.toggleInputField();
+        }
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, this.state.name));
@@ -246,8 +271,7 @@ function (_React$Component) {
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.toggleInputField = _this.toggleInputField.bind(_assertThisInitialized(_this));
     _this.changeNodeName = _this.changeNodeName.bind(_assertThisInitialized(_this));
-    _this.allAncestors = _this.allAncestors.bind(_assertThisInitialized(_this));
-    _this.highlightComponent = _this.highlightComponent.bind(_assertThisInitialized(_this));
+    _this.highlightAncestorChain = _this.highlightAncestorChain.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -260,7 +284,6 @@ function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.changeNodeName();
-      this.highlightComponent();
     }
   }, {
     key: "componentWillUnmount",
@@ -295,7 +318,10 @@ function (_React$Component) {
   }, {
     key: "doClick",
     value: function doClick() {
-      // this.allAncestors();
+      if (!this.state.children || !this.state.children.length) {
+        alert("This node has no children");
+      }
+
       this.setState({
         hideChildren: !this.state.hideChildren
       });
@@ -311,7 +337,7 @@ function (_React$Component) {
       this.setState({
         name: e.target.value
       });
-      this.allAncestors();
+      this.highlightAncestorChain();
     }
   }, {
     key: "toggleInputField",
@@ -363,29 +389,19 @@ function (_React$Component) {
       return children;
     }
   }, {
-    key: "allAncestors",
-    value: function allAncestors() {
+    key: "highlightAncestorChain",
+    value: function highlightAncestorChain() {
       var node = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this;
       var currNode = document.getElementById("anc-".concat(node.state.name));
 
       if (node.state.ancestor === null) {
         console.log("root");
         return currNode.style.background = "yellow";
-      } // this.setState({ highlight: true })
-
+      }
 
       currNode.style.background = "yellow";
       console.log(node.state.name);
-      this.allAncestors(node.state.ancestor);
-    }
-  }, {
-    key: "highlightComponent",
-    value: function highlightComponent() {
-      if (this.state.highlight) {
-        // let node = document.getElementById(`anc-${this.state.name}`);
-        // node.style.background = "yellow"
-        console.log("hi");
-      }
+      this.highlightAncestorChain(node.state.ancestor);
     }
   }, {
     key: "render",

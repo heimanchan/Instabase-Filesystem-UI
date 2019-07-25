@@ -19,8 +19,7 @@ class Folder extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.toggleInputField = this.toggleInputField.bind(this)
     this.changeNodeName = this.changeNodeName.bind(this)
-    this.allAncestors = this.allAncestors.bind(this)
-    this.highlightComponent = this.highlightComponent.bind(this)
+    this.highlightAncestorChain = this.highlightAncestorChain.bind(this)
   }
 
   componentWillMount() {
@@ -29,7 +28,6 @@ class Folder extends React.Component {
 
   componentDidMount() {
     this.changeNodeName();
-    this.highlightComponent();
   }
 
   componentWillUnmount() {
@@ -58,7 +56,10 @@ class Folder extends React.Component {
   }
 
   doClick() {
-    // this.allAncestors();
+    if (!this.state.children || !this.state.children.length) {
+      alert("This node has no children");
+    } 
+
     this.setState({ hideChildren: !this.state.hideChildren });
   }
 
@@ -68,7 +69,7 @@ class Folder extends React.Component {
 
   handleChange(e) {
     this.setState({ name: e.target.value });
-    this.allAncestors();
+    this.highlightAncestorChain();
   }
   
   toggleInputField() {
@@ -101,7 +102,7 @@ class Folder extends React.Component {
     return children
   }
 
-  allAncestors(node = this) {
+  highlightAncestorChain(node = this) {
     let currNode = document.getElementById(`anc-${node.state.name}`);
 
     if (node.state.ancestor === null) {
@@ -109,20 +110,11 @@ class Folder extends React.Component {
       return currNode.style.background = "yellow";
     }
 
-    // this.setState({ highlight: true })
     currNode.style.background = "yellow"
     console.log(node.state.name)
-    this.allAncestors(node.state.ancestor)
+    this.highlightAncestorChain(node.state.ancestor)
   }
 
-  highlightComponent() {
-    if (this.state.highlight) {
-      // let node = document.getElementById(`anc-${this.state.name}`);
-      // node.style.background = "yellow"
-      console.log("hi")
-    }
-  }
-  
   render() {
     let showChildren = this.state.hideChildren ? { display: "none" } : { display: "block" };
     let showEditField = this.state.editingName ? { display: "block" } : { display: "none" };
